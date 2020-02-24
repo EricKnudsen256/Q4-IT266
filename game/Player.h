@@ -149,9 +149,11 @@ enum {
 };
 
 enum PASSIVES {
-	ITEM_TOUGHER_TIMES,
-	ITEM_CAUTIOUS_SLUG,
-	ITEM_
+	PASSIVE_TOUGHER_TIMES,
+	PASSIVE_CAUTIOUS_SLUG,
+	PASSIVE_GOAT_HOOF,
+	PASSIVE_LENS_MAKERS,
+	PASSIVE_TRI_TIP
 };
 
 enum {
@@ -240,7 +242,8 @@ public:
 	void					GivePowerUp( idPlayer* player, int powerup, int msec );
 
 	//Saucy: Added
-	void					GivePassive(idPlayer* player, int passive, PASSIVES PASSIVE_NAME);
+	void					GivePassive(idPlayer* player, PASSIVES PASSIVE_NAME);
+	int						passives[5];
 
 	void					ClearPowerUps( void );
 	void					GetPersistantData( idDict &dict );
