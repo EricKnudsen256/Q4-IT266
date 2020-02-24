@@ -979,6 +979,18 @@ bool idInventory::Give( idPlayer *owner, const idDict &spawnArgs, const char *st
 	} else if ( !idStr::Icmp( statname, "item" ) || !idStr::Icmp( statname, "icon" ) || !idStr::Icmp( statname, "name" ) ) {
 		// ignore these as they're handled elsewhere
 		return false;
+		//Saucy: Start gives for new mod items: to implement - tougher_times, cautious_slug, goat_hoof, lens_maker, tri_tip
+	} else if (!idStr::Icmp(statname, "tougher_times") && !checkOnly) {
+		GivePowerUp(owner, POWERUP_AMMOREGEN, -1);
+	} else if (!idStr::Icmp(statname, "cautious_slug") && !checkOnly) {
+		GivePowerUp(owner, POWERUP_AMMOREGEN, -1);
+	} else if (!idStr::Icmp(statname, "goat_hoof") && !checkOnly) {
+		GivePowerUp(owner, POWERUP_AMMOREGEN, -1);
+	} else if (!idStr::Icmp(statname, "lens_maker") && !checkOnly) {
+		GivePowerUp(owner, POWERUP_AMMOREGEN, -1);
+	} else if (!idStr::Icmp(statname, "tri_tip") && !checkOnly) {
+		GivePowerUp(owner, POWERUP_AMMOREGEN, -1);
+	//Saucy: End extra item additions
 	} else {
 		// unknown item
 		gameLocal.Warning( "Unknown stat '%s' added to player's inventory", statname );
@@ -1069,6 +1081,17 @@ bool idInventory::UseAmmo( int index, int amount ) {
 	}
 
 	return true;
+}
+/*
+==============
+Saucy Inventory: Give Passive
+==============
+*/
+void idInventory::GivePassive(idPlayer *player, int passive, PASSIVES PASSIVE_NAME) {
+	if (passives[PASSIVE_NAME] == 0)
+	{
+
+	
 }
 
 /*

@@ -148,6 +148,12 @@ enum {
 	POWERUP_MAX
 };
 
+enum PASSIVES {
+	ITEM_TOUGHER_TIMES,
+	ITEM_CAUTIOUS_SLUG,
+	ITEM_
+};
+
 enum {
 	PMOD_SPEED = 0,
 	PMOD_PROJECTILE_DAMAGE,
@@ -230,9 +236,12 @@ public:
 	// save games
 	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
 	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file
-
 	void					Clear( void );
 	void					GivePowerUp( idPlayer* player, int powerup, int msec );
+
+	//Saucy: Added
+	void					GivePassive(idPlayer* player, int passive, PASSIVES PASSIVE_NAME);
+
 	void					ClearPowerUps( void );
 	void					GetPersistantData( idDict &dict );
 	void					RestoreInventory( idPlayer *owner, const idDict &dict );
