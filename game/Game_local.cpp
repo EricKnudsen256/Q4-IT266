@@ -7730,7 +7730,8 @@ idEntity* idGameLocal::HitScan(
 						// RAVEN END
 						
 						//Saucy: double damage if crit
-						if (owner->IsType(idPlayer::GetClassType()) && GetLocalPlayer()->inventory.GetPassives(PASSIVE_LENS_MAKERS))
+						crit = false;
+						if (owner->IsType(idPlayer::GetClassType()) && GetLocalPlayer()->inventory.GetPassives(PASSIVE_LENS_MAKERS) != 0)
 						{
 							float rnd = random.RandomFloat();
 							int lens_makers = GetLocalPlayer()->inventory.GetPassives(PASSIVE_LENS_MAKERS);
@@ -7738,11 +7739,6 @@ idEntity* idGameLocal::HitScan(
 							{
 								crit = true;
 							}
-							else
-							{
-								crit = false;
-							}
-
 						}
 
 						ent->Damage( owner, owner, dir, damage, damageScale, hitJoint, crit);
