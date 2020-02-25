@@ -373,7 +373,6 @@
     <ClCompile Include="game\mp\stats\StatEvent.cpp" />
     <ClCompile Include="game\mp\stats\StatManager.cpp" />
     <ClCompile Include="game\mp\stats\StatWindow.cpp" />
-    <ClCompile Include="Item.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\Actor.h" />
@@ -480,7 +479,6 @@
     <ClInclude Include="game\mp\stats\StatEvent.h" />
     <ClInclude Include="game\mp\stats\StatManager.h" />
     <ClInclude Include="game\mp\stats\StatWindow.h" />
-    <ClInclude Include="Item.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="game\Game.def" />

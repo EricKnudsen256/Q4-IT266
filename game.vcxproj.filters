@@ -37,9 +37,6 @@
     <Filter Include="Game\MP\Stats">
       <UniqueIdentifier>{a1313267-a884-4956-bca8-8509d2e2a1bb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Items">
-      <UniqueIdentifier>{2c37c4d5-18e9-41f5-a7d7-5716fa63d246}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="game\Actor.cpp">
@@ -519,9 +516,6 @@
     <ClCompile Include="game\mp\stats\StatWindow.cpp">
       <Filter>Game\MP\Stats</Filter>
     </ClCompile>
-    <ClCompile Include="Item.cpp">
-      <Filter>Game\Items</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game\Actor.h">
@@ -835,9 +829,6 @@
     </ClInclude>
     <ClInclude Include="game\mp\stats\StatWindow.h">
       <Filter>Game\MP\Stats</Filter>
-    </ClInclude>
-    <ClInclude Include="Item.h">
-      <Filter>Game\Items</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
