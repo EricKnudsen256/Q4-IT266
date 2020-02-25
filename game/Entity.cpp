@@ -3630,7 +3630,7 @@ inflictor, attacker, dir, and point can be NULL for environmental effects
 ============
 */
 void idEntity::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir, 
-					  const char *damageDefName, const float damageScale, const int location ) {
+					  const char *damageDefName, const float damageScale, const int location, bool crit) {
 	if ( forwardDamageEnt.IsValid() ) {
 		forwardDamageEnt->Damage( inflictor, attacker, dir, damageDefName, damageScale, location );
 		return;
@@ -3655,6 +3655,13 @@ void idEntity::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 
 	int	damage = damageDef->GetInt( "damage" );
 
+	//Saucy: Added crit ability
+
+	if (crit) {
+		damage *= 2;
+		gameLocal.Printf("crit");
+	}
+
 	// inform the attacker that they hit someone
 	attacker->DamageFeedback( this, inflictor, damage );
 	if ( damage ) {
@@ -3670,6 +3677,54 @@ void idEntity::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 			Killed( inflictor, attacker, damage, dir, location );
 		} else {
 			Pain( inflictor, attacker, damage, dir, location );
+		}
+	}
+}
+
+void idEntity::Damage(idEntity *inflictor, idEntity *attacker, const idVec3 &dir,
+	const char *damageDefName, const float damageScale, const int location) {
+	if (forwardDamageEnt.IsValid()) {
+		forwardDamageEnt->Damage(inflictor, attacker, dir, damageDefName, damageScale, location);
+		return;
+	}
+
+	if (!fl.takedamage) {
+		return;
+	}
+
+	if (!inflictor) {
+		inflictor = gameLocal.world;
+	}
+
+	if (!attacker) {
+		attacker = gameLocal.world;
+	}
+
+	const idDict *damageDef = gameLocal.FindEntityDefDict(damageDefName, false);
+	if (!damageDef) {
+		gameLocal.Error("Unknown damageDef '%s'\n", damageDefName);
+	}
+
+	int	damage = damageDef->GetInt("damage");
+
+
+
+	// inform the attacker that they hit someone
+	attacker->DamageFeedback(this, inflictor, damage);
+	if (damage) {
+		// do the damage
+		//jshepard: this is kinda important, no?
+		health -= damage;
+
+		if (health <= 0) {
+			if (health < -999) {
+				health = -999;
+			}
+
+			Killed(inflictor, attacker, damage, dir, location);
+		}
+		else {
+			Pain(inflictor, attacker, damage, dir, location);
 		}
 	}
 }

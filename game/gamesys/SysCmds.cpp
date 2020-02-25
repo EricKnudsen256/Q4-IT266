@@ -562,8 +562,8 @@ void GiveStuffToPlayer( idPlayer* player, const char* name, const char* value )
 	if ( !give_all && !player->Give( name, value ) ) {
 		gameLocal.Printf( "unknown item\n" );
 	}
-
 }
+
 
 /*
 ==================

@@ -7578,6 +7578,7 @@ idEntity* idGameLocal::HitScan(
 		int			collisionArea;
 		idVec3		collisionPoint;
 		bool		tracer;
+		bool		crit;
 		
 		// Calculate the end point of the trace
 		start    = origin;
@@ -7727,7 +7728,24 @@ idEntity* idGameLocal::HitScan(
 							statManager->WeaponHit( (idActor*)owner, ent, ((idPlayer*)owner)->GetCurrentWeapon() );
 						}
 						// RAVEN END
-						ent->Damage( owner, owner, dir, damage, damageScale, hitJoint );
+						
+						//Saucy: double damage if crit
+						if (owner->IsType(idPlayer::GetClassType()) && GetLocalPlayer()->inventory.GetPassives(PASSIVE_LENS_MAKERS))
+						{
+							float rnd = random.RandomFloat();
+							int lens_makers = GetLocalPlayer()->inventory.GetPassives(PASSIVE_LENS_MAKERS);
+							if (rnd > (float)(lens_makers) / 10.0f)
+							{
+								crit = true;
+							}
+							else
+							{
+								crit = false;
+							}
+
+						}
+
+						ent->Damage( owner, owner, dir, damage, damageScale, hitJoint, crit);
 					}
 
 					// Let the entity add its own damage effect

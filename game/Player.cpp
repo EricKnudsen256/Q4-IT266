@@ -1089,7 +1089,10 @@ Saucy Inventory: Give Passive
 */
 void idInventory::GivePassive(idPlayer *player, PASSIVES PASSIVE_NAME) {
 	passives[PASSIVE_NAME] += passives[PASSIVE_NAME];
-	gameLocal.Warning("Passive: ", PASSIVE_NAME, " given");
+}
+
+int idInventory::GetPassives(PASSIVES PASSIVE_NAME) {
+	return passives[PASSIVE_NAME];
 }
 
 /*

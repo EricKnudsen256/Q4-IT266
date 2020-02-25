@@ -243,6 +243,7 @@ public:
 
 	//Saucy: Added
 	void					GivePassive(idPlayer* player, PASSIVES PASSIVE_NAME);
+	int						GetPassives(PASSIVES PASSIVE_NAME);
 	int						passives[5];
 
 	void					ClearPowerUps( void );
