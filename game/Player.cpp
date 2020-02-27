@@ -8761,6 +8761,9 @@ idPlayer::AdjustSpeed
 */
 void idPlayer::AdjustSpeed( void ) {
 	float speed;
+	int goat_hoof;
+
+	goat_hoof = inventory.GetPassives(PASSIVE_GOAT_HOOF);
 
 	if ( spectating ) {
 		speed = pm_spectatespeed.GetFloat();
@@ -8777,6 +8780,9 @@ void idPlayer::AdjustSpeed( void ) {
 	}
 
 	speed *= PowerUpModifier(PMOD_SPEED);
+
+	//Saucy: Increase speed per hoof
+	speed *= 1.4 * goat_hoof;
 
 	if ( influenceActive == INFLUENCE_LEVEL3 ) {
 		speed *= 0.33f;
