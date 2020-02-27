@@ -10090,6 +10090,10 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
  	int			knockback;
  	idVec3		damage_from;
  	float		attackerPushScale;
+	int			tougher_times;
+
+	//Saucy: Added tougher times block damage
+	tougher_times = inventory.GetPassives(PASSIVE_TOUGHER_TIMES);
 
 	// RAVEN BEGIN
 	// twhitaker: difficulty levels
@@ -10268,6 +10272,14 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 	}
 // RAVEN END
 
+
+	//Saucy: Added functionality for damage block
+	float rnd = gameLocal.random.RandomFloat();
+	if (rnd > (1 - 1 / (0.15 * tougher_times + 1))) {
+		damage = 0;
+		gameLocal.Printf("Damage blocked");
+	}
+
 	// do the damage
 	if ( damage > 0 ) {
 		if ( !gameLocal.isMultiplayer ) {
@@ -10285,6 +10297,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		if ( damage < 1 ) {
 			damage = 1;
 		}
+
 
 		int oldHealth = health;
 		health -= damage;
