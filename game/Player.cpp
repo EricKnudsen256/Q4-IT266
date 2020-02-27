@@ -8761,9 +8761,8 @@ idPlayer::AdjustSpeed
 */
 void idPlayer::AdjustSpeed( void ) {
 	float speed;
+	float speedGainPerHoof;
 	int goat_hoof;
-
-	goat_hoof = inventory.GetPassives(PASSIVE_GOAT_HOOF);
 
 	if ( spectating ) {
 		speed = pm_spectatespeed.GetFloat();
@@ -8777,13 +8776,27 @@ void idPlayer::AdjustSpeed( void ) {
 	} else {
 		speed = pm_walkspeed.GetFloat();
 		bobFrac = 0.0f;
+
+		//Saucy: Increase speed per hoof
+
+		speedGainPerHoof = 0;
+		goat_hoof = 5;
+		//goat_hoof = inventory.GetPassives(PASSIVE_GOAT_HOOF);
+
+		if (goat_hoof > 0) {
+			gameLocal.Printf("speed:%f\n", speed);
+			speedGainPerHoof = speed * .14f;
+			speed = speed + speedGainPerHoof * goat_hoof;
+			gameLocal.Printf("speed:%f\n", speed);
+		}
+
+		speed = 1000.0f;
 	}
 
 	speed *= PowerUpModifier(PMOD_SPEED);
 
-	//Saucy: Increase speed per hoof
-	speed *= 1.4 * goat_hoof;
 
+	
 	if ( influenceActive == INFLUENCE_LEVEL3 ) {
 		speed *= 0.33f;
 	}
