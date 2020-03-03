@@ -9680,16 +9680,17 @@ void idPlayer::Think( void ) {
 
 	//Saucy: think code for cautious_slug
 	int slugs = inventory.GetPassives(PASSIVE_CAUTIOUS_SLUG);
-	if (timeSinceHurt > 180) {
-		gameLocal.Printf("timeSinceHurt%i\n", timeSinceHurt);
-		if (timeSinceHeal >= 6) {
+	if (timeSinceHurt > 300) {
+		if (timeSinceHeal >= 12) {
 			if (timeSinceHeal > 1) {
-				health += slugs;
-				timeSinceHeal = 0;
-				gameLocal.Printf("HEAL");
+				if (health < 100) {
+					gameLocal.Printf("Slugs:%i\n", slugs);
+					health = health + slugs;
+					timeSinceHeal = 0;
+				}
 			}
-			timeSinceHeal++;
 		}
+		timeSinceHeal++;
 	}
 	timeSinceHurt++;
 }
