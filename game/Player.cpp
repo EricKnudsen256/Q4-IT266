@@ -8761,8 +8761,6 @@ idPlayer::AdjustSpeed
 */
 void idPlayer::AdjustSpeed( void ) {
 	float speed;
-	float speedGainPerHoof;
-	int goat_hoof;
 
 	if ( spectating ) {
 		speed = pm_spectatespeed.GetFloat();
@@ -8776,27 +8774,10 @@ void idPlayer::AdjustSpeed( void ) {
 	} else {
 		speed = pm_walkspeed.GetFloat();
 		bobFrac = 0.0f;
-
-		//Saucy: Increase speed per hoof
-
-		speedGainPerHoof = 0;
-		goat_hoof = 5;
-		//goat_hoof = inventory.GetPassives(PASSIVE_GOAT_HOOF);
-
-		if (goat_hoof > 0) {
-			gameLocal.Printf("speed:%f\n", speed);
-			speedGainPerHoof = speed * .14f;
-			speed = speed + speedGainPerHoof * goat_hoof;
-			gameLocal.Printf("speed:%f\n", speed);
-		}
-
-		speed = 1000.0f;
 	}
 
 	speed *= PowerUpModifier(PMOD_SPEED);
 
-
-	
 	if ( influenceActive == INFLUENCE_LEVEL3 ) {
 		speed *= 0.33f;
 	}
@@ -10109,10 +10090,6 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
  	int			knockback;
  	idVec3		damage_from;
  	float		attackerPushScale;
-	int			tougher_times;
-
-	//Saucy: Added tougher times block damage
-	tougher_times = inventory.GetPassives(PASSIVE_TOUGHER_TIMES);
 
 	// RAVEN BEGIN
 	// twhitaker: difficulty levels
@@ -10291,14 +10268,6 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 	}
 // RAVEN END
 
-
-	//Saucy: Added functionality for damage block
-	float rnd = gameLocal.random.RandomFloat();
-	if (rnd > (1 - 1 / (0.15 * tougher_times + 1))) {
-		damage = 0;
-		gameLocal.Printf("Damage blocked");
-	}
-
 	// do the damage
 	if ( damage > 0 ) {
 		if ( !gameLocal.isMultiplayer ) {
@@ -10316,7 +10285,6 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		if ( damage < 1 ) {
 			damage = 1;
 		}
-
 
 		int oldHealth = health;
 		health -= damage;
