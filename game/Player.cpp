@@ -193,6 +193,7 @@ const idVec4 marineHitscanTint( 0.69f, 1.0f, 0.4f, 1.0f );
 const idVec4 stroggHitscanTint( 1.0f, 0.5f, 0.0f, 1.0f );
 const idVec4 defaultHitscanTint( 0.4f, 1.0f, 0.4f, 1.0f );
 
+
 /*
 ==============
 idInventory::Clear
@@ -234,6 +235,12 @@ void idInventory::Clear( void ) {
 	memset( ammoIndices, -1, sizeof( int ) * MAX_WEAPONS );
 	memset( startingAmmo, -1, sizeof( int ) * MAX_WEAPONS );
 	memset( ammoRegenTime, -1, sizeof( int ) * MAX_WEAPONS );
+
+	//Saucy: Initialize item array so everything doesnt break
+	for (int i = 0; i < sizeof(passives); i++) {
+		passives[i] = 0;
+	}
+
 }
 
 /*
@@ -991,6 +998,7 @@ bool idInventory::Give( idPlayer *owner, const idDict &spawnArgs, const char *st
 	} else if (!idStr::Icmp(statname, "tri_tip") && !checkOnly) {
 		GivePassive(owner, PASSIVE_TRI_TIP);
 	//Saucy: End extra item additions
+
 	} else {
 		// unknown item
 		gameLocal.Warning( "Unknown stat '%s' added to player's inventory", statname );
@@ -1366,6 +1374,8 @@ idPlayer::idPlayer() {
 	teamAmmoRegenPending	= false;
 	teamDoubler			= NULL;		
 	teamDoublerPending		= false;
+
+
 }
 
 /*
@@ -9667,6 +9677,21 @@ void idPlayer::Think( void ) {
 		inBuyZone = false;
 
 	inBuyZonePrev = false;
+
+	//Saucy: think code for cautious_slug
+	int slugs = inventory.GetPassives(PASSIVE_CAUTIOUS_SLUG);
+	if (timeSinceHurt > 180) {
+		gameLocal.Printf("timeSinceHurt%i\n", timeSinceHurt);
+		if (timeSinceHeal >= 6) {
+			if (timeSinceHeal > 1) {
+				health += slugs;
+				timeSinceHeal = 0;
+				gameLocal.Printf("HEAL");
+			}
+			timeSinceHeal++;
+		}
+	}
+	timeSinceHurt++;
 }
 
 /*
@@ -10288,6 +10313,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 
 		int oldHealth = health;
 		health -= damage;
+		timeSinceHurt = 0;
 
 		GAMELOG_ADD ( va("player%d_damage_taken", entityNumber ), damage );
 		GAMELOG_ADD ( va("player%d_damage_%s", entityNumber, damageDefName), damage );
