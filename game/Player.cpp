@@ -8776,6 +8776,7 @@ void idPlayer::AdjustSpeed( void ) {
 		bobFrac = 0.0f;
 	}
 
+
 	speed *= PowerUpModifier(PMOD_SPEED);
 
 	if ( influenceActive == INFLUENCE_LEVEL3 ) {
@@ -9065,6 +9066,12 @@ void idPlayer::Move( void ) {
 		pfl.onLadder	= false;
 		pfl.jump		= false;
 	} else {
+
+		int goat_hoof;
+		goat_hoof = inventory.GetPassives(PASSIVE_GOAT_HOOF);
+
+		
+
 		pfl.crouch	= physicsObj.IsCrouching();
 		pfl.onGround	= physicsObj.HasGroundContacts();
 		pfl.onLadder	= physicsObj.OnLadder();
@@ -9080,7 +9087,8 @@ void idPlayer::Move( void ) {
  			if ( vel.ToVec2().LengthSqr() < 0.1f ) {
  				vel.ToVec2() = physicsObj.GetOrigin().ToVec2() - groundEnt->GetPhysics()->GetAbsBounds().GetCenter().ToVec2();
  				vel.ToVec2().NormalizeFast();
- 				vel.ToVec2() *= pm_speed.GetFloat();
+				//Saucy: Increase speed per hoof
+				vel.ToVec2() *= pm_speed.GetFloat() + pm_speed.GetFloat() * .14 * goat_hoof;;
  			} else {
  				// give em a push in the direction they're going
  				vel *= 1.1f;
@@ -9674,7 +9682,6 @@ void idPlayer::Think( void ) {
 		if (timeSinceHeal >= 12) {
 			if (timeSinceHeal > 1) {
 				if (health < 100) {
-					gameLocal.Printf("Slugs:%i\n", slugs);
 					health = health + slugs;
 					timeSinceHeal = 0;
 				}
