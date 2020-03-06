@@ -987,16 +987,6 @@ bool idInventory::Give( idPlayer *owner, const idDict &spawnArgs, const char *st
 		// ignore these as they're handled elsewhere
 		return false;
 		//Saucy: Start gives for new mod items: to implement - tougher_times, cautious_slug, goat_hoof, lens_maker, tri_tip
-	} else if (!idStr::Icmp(statname, "tougher_times") && !checkOnly) {
-		GivePassive(owner, PASSIVE_TOUGHER_TIMES);
-	} else if (!idStr::Icmp(statname, "cautious_slug") && !checkOnly) {
-		GivePassive(owner, PASSIVE_CAUTIOUS_SLUG);
-	} else if (!idStr::Icmp(statname, "goat_hoof") && !checkOnly) {
-		GivePassive(owner, PASSIVE_GOAT_HOOF);
-	} else if (!idStr::Icmp(statname, "lens_maker") && !checkOnly) {
-		GivePassive(owner, PASSIVE_LENS_MAKERS);
-	} else if (!idStr::Icmp(statname, "tri_tip") && !checkOnly) {
-		GivePassive(owner, PASSIVE_TRI_TIP);
 	//Saucy: End extra item additions
 
 	} else {
@@ -8790,6 +8780,7 @@ void idPlayer::AdjustSpeed( void ) {
 		bobFrac = 0.0f;
 	}
 
+
 	speed *= PowerUpModifier(PMOD_SPEED);
 
 	if ( influenceActive == INFLUENCE_LEVEL3 ) {
@@ -9084,6 +9075,12 @@ void idPlayer::Move( void ) {
 		pfl.onLadder	= false;
 		pfl.jump		= false;
 	} else {
+
+		int goat_hoof;
+		goat_hoof = inventory.GetPassives(PASSIVE_GOAT_HOOF);
+
+		
+
 		pfl.crouch	= physicsObj.IsCrouching();
 		pfl.onGround	= physicsObj.HasGroundContacts();
 		pfl.onLadder	= physicsObj.OnLadder();
@@ -9099,7 +9096,8 @@ void idPlayer::Move( void ) {
  			if ( vel.ToVec2().LengthSqr() < 0.1f ) {
  				vel.ToVec2() = physicsObj.GetOrigin().ToVec2() - groundEnt->GetPhysics()->GetAbsBounds().GetCenter().ToVec2();
  				vel.ToVec2().NormalizeFast();
- 				vel.ToVec2() *= pm_speed.GetFloat();
+				//Saucy: Increase speed per hoof
+				vel.ToVec2() *= pm_speed.GetFloat() + pm_speed.GetFloat() * .14 * goat_hoof;;
  			} else {
  				// give em a push in the direction they're going
  				vel *= 1.1f;
