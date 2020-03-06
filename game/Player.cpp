@@ -1096,7 +1096,7 @@ Saucy Inventory: Give Passive
 ==============
 */
 void idInventory::GivePassive(idPlayer *player, PASSIVES PASSIVE_NAME) {
-	passives[PASSIVE_NAME] += passives[PASSIVE_NAME];
+	passives[PASSIVE_NAME] += 1;
 }
 
 int idInventory::GetPassives(PASSIVES PASSIVE_NAME) {
@@ -8772,6 +8772,10 @@ idPlayer::AdjustSpeed
 void idPlayer::AdjustSpeed( void ) {
 	float speed;
 
+	int goat_hoof;
+	
+	goat_hoof = inventory.GetPassives(PASSIVE_GOAT_HOOF);
+
 	if ( spectating ) {
 		speed = pm_spectatespeed.GetFloat();
 		bobFrac = 0.0f;
@@ -8792,7 +8796,12 @@ void idPlayer::AdjustSpeed( void ) {
 		speed *= 0.33f;
 	}
 
+	//Saucy: Increase speed per hoof
+	speed += speed * .14 * goat_hoof;
+	
+
 	physicsObj.SetSpeed( speed, pm_crouchspeed.GetFloat() );
+
 }
 
 /*
@@ -9684,7 +9693,6 @@ void idPlayer::Think( void ) {
 		if (timeSinceHeal >= 12) {
 			if (timeSinceHeal > 1) {
 				if (health < 100) {
-					gameLocal.Printf("Slugs:%i\n", slugs);
 					health = health + slugs;
 					timeSinceHeal = 0;
 				}
@@ -10117,6 +10125,11 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
  	idVec3		damage_from;
  	float		attackerPushScale;
 
+	int			tougher_times;
+	
+	//Saucy: Added tougher times block damage
+	tougher_times = inventory.GetPassives(PASSIVE_TOUGHER_TIMES);
+
 	// RAVEN BEGIN
 	// twhitaker: difficulty levels
 	float modifiedDamageScale = damageScale;
@@ -10293,6 +10306,14 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		}
 	}
 // RAVEN END
+
+
+	//Saucy: Added functionality for damage block
+
+	float rnd = gameLocal.random.RandomFloat();
+	if (rnd < (1 - 1 / (0.15 * tougher_times + 1))) {
+		damage = 0;
+	}
 
 	// do the damage
 	if ( damage > 0 ) {
