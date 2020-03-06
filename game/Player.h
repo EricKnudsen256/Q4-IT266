@@ -426,6 +426,11 @@ public:
 	bool					vsMsgState;
 
 	int						lastPickupTime;
+
+	//Saucy:Added
+
+	int						timeSinceHeal;
+	int						timeSinceHurt;
 //RAVEN BEGIN
 // asalmon: the eneny the player is most likely currently aiming at
 #ifdef _XBOX
