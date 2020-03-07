@@ -2038,6 +2038,9 @@ void idPlayer::Spawn( void ) {
 	declManager->FindType( DECL_ENTITYDEF, "dmg_shellshock", false, false );
 	declManager->FindType( DECL_ENTITYDEF, "dmg_shellshock_nohl", false, false );
 
+	//Saucy: precache for bleed
+	//declManager->FindType(DECL_ENTITYDEF, "damage_bleed", false, false);
+
 	gibSkin = declManager->FindSkin( spawnArgs.GetString( "skin_gibskin" ) );
 
 	// Skil levels
@@ -2663,6 +2666,10 @@ void idPlayer::Restore( idRestoreGame *savefile ) {
 	declManager->FindType( DECL_ENTITYDEF, "damage_telefrag", false, false );
 	declManager->FindType( DECL_ENTITYDEF, "dmg_shellshock", false, false );
 	declManager->FindType( DECL_ENTITYDEF, "dmg_shellshock_nohl", false, false );
+
+	//Saucy: FindType for bleed
+
+	//declManager->FindType(DECL_ENTITYDEF, "damage_bleed", false, false);
 // RAVEN END
 }
 

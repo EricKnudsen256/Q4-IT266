@@ -7735,7 +7735,7 @@ idEntity* idGameLocal::HitScan(
 						{
 							float rnd = random.RandomFloat();
 							int lens_makers = GetLocalPlayer()->inventory.GetPassives(PASSIVE_LENS_MAKERS);
-							if (rnd > (float)(lens_makers) / 10.0f)
+							if (rnd < (float)(lens_makers) / 10.0f)
 							{
 								crit = true;
 							}
@@ -7745,9 +7745,9 @@ idEntity* idGameLocal::HitScan(
 						{
 							float rnd = random.RandomFloat();
 							int tri_tip = GetLocalPlayer()->inventory.GetPassives(PASSIVE_TRI_TIP);
-							if (rnd > (float)(tri_tip) / 10.0f)
+							if (rnd < (float)(tri_tip) / 10.0f)
 							{
-								ent->SetBleedTime();
+								ent->bleedTime = 300;
 							}
 						}
 
@@ -7773,6 +7773,17 @@ idEntity* idGameLocal::HitScan(
 								damage = hitscanDict.GetString ( "def_damage" );
 							}
 							if ( damage && damage[0] ) {
+
+								if (owner->IsType(idPlayer::GetClassType()) && GetLocalPlayer()->inventory.GetPassives(PASSIVE_TRI_TIP) != 0)
+								{
+									float rnd = random.RandomFloat();
+									int tri_tip = GetLocalPlayer()->inventory.GetPassives(PASSIVE_TRI_TIP);
+									if (rnd < (float)(tri_tip) / 10.0f)
+									{
+										actualHitEnt->bleedTime = 300;
+									}
+								}
+
 								actualHitEnt->Damage( owner, owner, dir, damage, damageScale, CLIPMODEL_ID_TO_JOINT_HANDLE( tr.c.id ) );
 							}
 						}

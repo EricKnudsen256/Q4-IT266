@@ -27,9 +27,7 @@ public:
 	void			Stop						( bool destroyParticles = false );			
 	void			Restart						( void );
 
-	//Saucy: Added CheckBleed()
 
-	bool			CheckBleed					( void );
 			
 	void			Attenuate					( float attenuation );
 			

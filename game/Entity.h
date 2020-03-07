@@ -150,6 +150,7 @@ public:
 	// Saucy: added bleedTime int
 	int					bleedTime;
 	int					timeBetweenBleeds;
+	bool				logBleed;
 
 
 	struct entityFlags_s {
@@ -533,7 +534,7 @@ public:
 
 	//Saucy: Added CheckBleed()
 
-	bool					CheckBleed(void);
+	void					CheckBleed(void);
 	void					SetBleedTime(void);
 
 protected:
