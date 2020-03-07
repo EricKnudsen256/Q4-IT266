@@ -992,6 +992,7 @@ idEntity::Think
 void idEntity::Think( void ) {
 	RunPhysics();
 	Present();
+	CheckBleed();
 }
 
 /*
@@ -6286,6 +6287,22 @@ size_t idEntity::Size( void ) const
 {
 	// TODO: more crap needs to go here!
 	return sizeof (idEntity);
+}
+
+
+// Saucy CheckBleed Code
+bool idEntity::CheckBleed( void ) {
+
+	if (bleedTime >= 0) {
+		bleedTime--;
+		Damage(NULL, NULL, idVec3(0, 0, -1), "damage_bleed", 1.0f, 0);
+		return true;
+	}
+	return false;
+}
+
+void idEntity::SetBleedTime( int bleed ) {
+	bleedTime += bleed;
 }
 // RAVEN END
 

@@ -147,6 +147,10 @@ public:
 	idVec4					mLastLongThinkColor;
 // RAVEN END
 
+	// Saucy: added bleedTime int
+	int					bleedTime;
+
+
 	struct entityFlags_s {
 		bool				notarget			:1;	// if true never attack or target this entity
 		bool				noknockback			:1;	// if true no knockback from hits
@@ -181,6 +185,7 @@ public:
 		bool				allowAutoBlink			:1;
 // jshepard: instant burnout when destroyed
 		bool				quickBurn				:1;
+
 
 // RAVEN END
 	} fl;
@@ -677,6 +682,12 @@ protected:
 	void					Event_RemoveTarget				( idEntity *removeMe );
 // mekberg: added
 	void					Event_SetHealth					( float newHealth );
+
+	//Saucy: Added CheckBleed()
+
+	bool					CheckBleed						( void );
+	void					SetBleedTime					( int bleedTime	);
+
 // RAVEN END
 };
 
