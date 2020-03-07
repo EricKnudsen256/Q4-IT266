@@ -7741,6 +7741,16 @@ idEntity* idGameLocal::HitScan(
 							}
 						}
 
+						if (owner->IsType(idPlayer::GetClassType()) && GetLocalPlayer()->inventory.GetPassives(PASSIVE_TRI_TIP) != 0)
+						{
+							float rnd = random.RandomFloat();
+							int tri_tip = GetLocalPlayer()->inventory.GetPassives(PASSIVE_TRI_TIP);
+							if (rnd > (float)(tri_tip) / 10.0f)
+							{
+								ent->SetBleedTime();
+							}
+						}
+
 						ent->Damage( owner, owner, dir, damage, damageScale, hitJoint, crit);
 					}
 

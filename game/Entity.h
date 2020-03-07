@@ -149,6 +149,7 @@ public:
 
 	// Saucy: added bleedTime int
 	int					bleedTime;
+	int					timeBetweenBleeds;
 
 
 	struct entityFlags_s {
@@ -530,6 +531,11 @@ public:
 	virtual void			GuidedProjectileIncoming( idGuidedProjectile * projectile ) { }
 // RAVEN END
 
+	//Saucy: Added CheckBleed()
+
+	bool					CheckBleed(void);
+	void					SetBleedTime(void);
+
 protected:
 	renderEntity_t			renderEntity;						// used to present a model to the renderer
 	int						modelDefHandle;						// handle to static renderer model
@@ -683,10 +689,7 @@ protected:
 // mekberg: added
 	void					Event_SetHealth					( float newHealth );
 
-	//Saucy: Added CheckBleed()
 
-	bool					CheckBleed						( void );
-	void					SetBleedTime					( int bleedTime	);
 
 // RAVEN END
 };

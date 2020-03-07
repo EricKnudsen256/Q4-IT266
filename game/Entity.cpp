@@ -6293,16 +6293,25 @@ size_t idEntity::Size( void ) const
 // Saucy CheckBleed Code
 bool idEntity::CheckBleed( void ) {
 
+	if (timeBetweenBleeds == 0) {
+		timeBetweenBleeds = 60;
+	}
 	if (bleedTime >= 0) {
+		if (timeBetweenBleeds <= 0) {
+			Damage(NULL, NULL, idVec3(0, 0, -1), "damage_bleed", 1.0f, 0);
+			timeBetweenBleeds = 60;
+			return true;
+		}
 		bleedTime--;
-		Damage(NULL, NULL, idVec3(0, 0, -1), "damage_bleed", 1.0f, 0);
-		return true;
 	}
 	return false;
 }
 
-void idEntity::SetBleedTime( int bleed ) {
-	bleedTime += bleed;
+void idEntity::SetBleedTime() {
+	if (bleedTime > 300)
+	{
+		bleedTime = 300;
+	}
 }
 // RAVEN END
 
