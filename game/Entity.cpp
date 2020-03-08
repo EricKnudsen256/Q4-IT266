@@ -121,6 +121,7 @@ const idEventDef EV_AppendTarget( "appendTarget", "E", 'f' );
 const idEventDef EV_RemoveTarget( "removeTarget", "e" );
 // mekberg:
 const idEventDef EV_SetHealth( "setHealth", "f" );
+const idEventDef EV_SetBleed( "setBleed", "f");
 // RAVEN END
 
 ABSTRACT_DECLARATION( idClass, idEntity )
@@ -220,6 +221,7 @@ ABSTRACT_DECLARATION( idClass, idEntity )
 	EVENT( EV_RemoveTarget,			idEntity::Event_RemoveTarget )
 // mekberg: added
 	EVENT( EV_SetHealth,			idEntity::Event_SetHealth )
+	EVENT( EV_SetBleed,				idEntity::SetBleedTime)
 // RAVEN END
 END_CLASS
 
@@ -6308,7 +6310,6 @@ size_t idEntity::Size( void ) const
 
 void idEntity::SetBleedTime( void ) {
 	bleedTime = 300;
-	logBleed = true;
 }
 
 // Saucy CheckBleed Code

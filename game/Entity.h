@@ -535,7 +535,6 @@ public:
 	//Saucy: Added CheckBleed()
 
 	void					CheckBleed(void);
-	void					SetBleedTime(void);
 
 protected:
 	renderEntity_t			renderEntity;						// used to present a model to the renderer
@@ -689,6 +688,7 @@ protected:
 	void					Event_RemoveTarget				( idEntity *removeMe );
 // mekberg: added
 	void					Event_SetHealth					( float newHealth );
+	void					SetBleedTime					(void);
 
 
 

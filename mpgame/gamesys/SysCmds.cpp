@@ -2571,6 +2571,7 @@ static void Cmd_TestSave_f( const idCmdArgs &args ) {
 	idFile *f;
 
 	f = fileSystem->OpenFileWrite( "test.sav" );
+	//Saucy: Added to make finding SaveGame Easier
 	gameLocal.SaveGame( f );
 	fileSystem->CloseFile( f );
 }

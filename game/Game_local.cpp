@@ -1294,6 +1294,8 @@ idGameLocal::LoadMap
 Initializes all map variables common to both save games and spawned games.
 ===================
 */
+
+//SAUCY: THIS IS WHERE I SHOULD DO THE RANDOM MAP
 void idGameLocal::LoadMap( const char *mapName, int randseed ) {
 	int i;
 // RAVEN BEGIN
@@ -1987,7 +1989,7 @@ idGameLocal::InitFromSaveGame
 */
 bool idGameLocal::InitFromSaveGame( const char *mapName, idRenderWorld *renderWorld, idFile *saveGameFile ) {
 	TIME_THIS_SCOPE( __FUNCLINE__);
-	
+	/*
 	int i;
 	int num;
 	idEntity *ent;
@@ -2249,8 +2251,10 @@ bool idGameLocal::InitFromSaveGame( const char *mapName, idRenderWorld *renderWo
 	gamestate = GAMESTATE_ACTIVE;
 
 	Printf( "--------------------------------------\n" );
-
+	*/
 	return true;
+
+
 }
 
 /*
