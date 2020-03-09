@@ -939,12 +939,11 @@ bool idInventory::Give( idPlayer *owner, const idDict &spawnArgs, const char *st
 			}
 // RAVEN END
 
- 			if ( gameLocal.isMultiplayer 
-				&& ( weapons & ( 1 << i ) ) ) {
+ 			if ( !gameLocal.isMultiplayer ) {
 				//already have this weapon
 				if ( !dropped ) {
 					//a placed weapon item
-					if ( gameLocal.IsWeaponsStayOn() ) {
+					if ( true ) {
 						//don't pick up weapons at all if you already have them...
 						continue;
 					}
@@ -4290,6 +4289,7 @@ bool idPlayer::GiveItem( idItem *item ) {
 //	GiveDatabaseEntry ( &item->spawnArgs );
 	
 	// Show the item pickup on the hud
+	// Saucy: HUD CODE, SHOULD LOOK AT THIS
 	if ( hud ) {
 		idStr langToken = item->spawnArgs.GetString( "inv_name" );
 		hud->SetStateString ( "itemtext", common->GetLocalizedString( langToken ) );
