@@ -1298,6 +1298,9 @@ Initializes all map variables common to both save games and spawned games.
 //SAUCY: THIS IS WHERE I SHOULD DO THE RANDOM MAP
 void idGameLocal::LoadMap( const char *mapName, int randseed ) {
 	int i;
+
+
+
 // RAVEN BEGIN
 // jnewquist: Tag scope and callees to track allocations using "new".
 	MEM_SCOPED_TAG(tag,MA_PARSER);
@@ -1899,6 +1902,64 @@ idGameLocal::InitFromNewMap
 void idGameLocal::InitFromNewMap( const char *mapName, idRenderWorld *renderWorld, bool isServer, bool isClient, int randseed ) {
 
 	TIME_THIS_SCOPE( __FUNCLINE__);
+
+
+	float rnd;
+	int totalMaps = 13;
+
+	rnd = random.RandomFloat() * totalMaps;
+	//Roll twice because the first roll is always the same, and always airdefense1
+	rnd = random.RandomFloat() * totalMaps;
+
+	Printf("RANDOM MAP NUMBER = %f\n", rnd);
+
+	
+	switch ((int)rnd) {
+		case 0:
+			mapName = "maps/game/airdefense1";
+			break;
+		case 1:
+			mapName = "maps/game/airdefense2";
+			break;
+		case 2:
+			mapName = "maps/game/hangar1";
+			break;
+		case 3:
+			mapName = "maps/game/hangar2";
+			break;
+		case 4:
+			mapName = "maps/game/network1";
+			break;
+		case 5:
+			mapName = "maps/game/network2";
+			break;
+		case 6:
+			mapName = "maps/game/process2";
+			break;
+		case 7:
+			mapName = "maps/game/storage2";
+			break;
+		case 8:
+			mapName = "maps/game/dispersal";
+			break;
+		case 9:
+			mapName = "maps/game/mcc_landing";
+			break;
+		case 10:
+			mapName = "maps/game/core1";
+			break;
+		case 11:
+			mapName = "maps/game/hub1";
+			break;
+		case 12:
+			mapName = "maps/game/hub2";
+			break;
+		default:
+			Printf("RANDOM MAP FAILED, GOING TO MAP THAT SHOULD HAVE BEEN LOADED");
+			break;
+	}
+	
+	renderWorld->InitFromMap(mapName);
 	
 	this->isServer = isServer;
 	this->isClient = isClient;
