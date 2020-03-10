@@ -3067,6 +3067,32 @@ void Cmd_ClientOverflowReliable_f( const idCmdArgs& args ) {
 }
 #endif
 
+
+//Saucy: Added CMD_Character_f
+void Cmd_Character_f(const idCmdArgs& args) {
+
+
+	if (idStr::Icmp(args.Argv(1), "marine") == 0 )
+	{
+		gameLocal.SetCharacter("player_marine");
+		gameLocal.Printf("CHARACTER: marine\n");
+	}
+	else if (idStr::Icmp(args.Argv(1), "strogg") == 0)
+	{
+		gameLocal.SetCharacter("player_strogg");
+		gameLocal.Printf("CHARACTER: strogg\n");
+	}
+	else if (idStr::Icmp(args.Argv(1), "heavy") == 0)
+	{
+		gameLocal.SetCharacter("player_heavy");
+		gameLocal.Printf("CHARACTER: heavy\n");
+	}
+	else
+	{
+		gameLocal.Printf("CHARACTER NOT FOUND");
+	}
+
+}
 /*
 =================
 idGameLocal::InitConsoleCommands
@@ -3082,6 +3108,9 @@ void idGameLocal::InitConsoleCommands( void ) {
 //	cmdSystem->AddCommand( "writeGameState",		WriteGameState_f,			CMD_FL_GAME,				"write game state" );
 //	cmdSystem->AddCommand( "testSaveGame",			TestSaveGame_f,				CMD_FL_GAME|CMD_FL_CHEAT,	"test a save game for a level" );
 // RAVEN END
+
+	//Saucy: Command to select character
+	cmdSystem->AddCommand("character",				Cmd_Character_f,			CMD_FL_GAME,				 "chooses the player character type");
 	cmdSystem->AddCommand( "game_memory",			idClass::DisplayInfo_f,		CMD_FL_GAME,				"displays game class info" );
 	cmdSystem->AddCommand( "listClasses",			idClass::ListClasses_f,		CMD_FL_GAME,				"lists game classes" );
 	cmdSystem->AddCommand( "listThreads",			idThread::ListThreads_f,	CMD_FL_GAME|CMD_FL_CHEAT,	"lists script threads" );

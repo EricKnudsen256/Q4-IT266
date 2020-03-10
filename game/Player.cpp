@@ -1789,6 +1789,8 @@ void idPlayer::Init( void ) {
 		teamDoublerPending = false;
 		teamDoubler = PlayEffect( "fx_doubler", renderEntity.origin, renderEntity.axis, true );
 	}
+
+
 }
 
 /*
@@ -1831,6 +1833,12 @@ Prepare any resources used by the player.
 void idPlayer::Spawn( void ) {
 	idStr		temp;
 	idBounds	bounds;
+
+	idStr playerType;
+
+	//Saucy: Added code in spawn for checking playerType
+	playerType = gameLocal.playerCharacter;
+	const idDict* playerDict = gameLocal.FindEntityDefDict(playerType, false);
 
 	if ( entityNumber >= MAX_CLIENTS ) {
 		gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
@@ -2081,6 +2089,16 @@ void idPlayer::Spawn( void ) {
 //RITUAL END
 
 	itemCosts = static_cast< const idDeclEntityDef * >( declManager->FindType( DECL_ENTITYDEF, "ItemCostConstants", false ) );
+
+	idStr allowedWeapon0 = playerDict->GetString("allowed_Weapon_0", "weapon_blaster");
+	idStr allowedWeapon1 = playerDict->GetString("allowed_Weapon_1", "weapon_machinegun");
+
+	
+
+	Give("weapon", allowedWeapon0, true);
+	Give("weapon", allowedWeapon1, true);
+
+	
 }
 
 /*

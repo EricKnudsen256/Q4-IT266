@@ -856,7 +856,7 @@ static void Cmd_Say( bool team, const idCmdArgs &args ) {
 	const char *cmd = team ? "sayTeam" : "say" ;
 
 	if ( !gameLocal.isMultiplayer ) {
-		gameLocal.Printf( "%s can only be used in a multiplayer game\n", cmd );
+		//gameLocal.Printf( "%s can only be used in a multiplayer game\n", cmd );
 		return;
 	}
 
@@ -943,7 +943,8 @@ Cmd_Say_f
 ==================
 */
 static void Cmd_Say_f( const idCmdArgs &args ) {
-	Cmd_Say( false, args );
+	//Cmd_Say( false, args );
+	gameLocal.Printf("WORKING\n");
 }
 
 /*
@@ -3053,6 +3054,31 @@ void Cmd_ListMaps_f( const idCmdArgs& args ) {
 	gameLocal.mpGame.ListMaps();
 }
 
+//Saucy: Added CMD_Character_f
+void Cmd_Character_f(const idCmdArgs& args) {
+
+
+	if (idStr::Icmp(args.Argv(1), "marine"))
+	{
+		//gameLocal.SetCharacter("player_marine");
+		gameLocal.Printf("CHARACTER: marine");
+	}
+	else if (idStr::Icmp(args.Argv(1), "strogg"))
+	{
+		//gameLocal.SetCharacter("player_strogg");
+		gameLocal.Printf("CHARACTER: strogg");
+	}
+	else if (idStr::Icmp(args.Argv(1), "heavy"))
+	{
+		//gameLocal.SetCharacter("player_heavy");
+		gameLocal.Printf("CHARACTER: heavy");
+	}
+	else
+	{
+		gameLocal.Printf("CHARACTER NOT FOUND");
+	}
+	
+}
 /*
 =================
 idGameLocal::InitConsoleCommands
@@ -3068,6 +3094,10 @@ void idGameLocal::InitConsoleCommands( void ) {
 //	cmdSystem->AddCommand( "writeGameState",		WriteGameState_f,			CMD_FL_GAME,				"write game state" );
 //	cmdSystem->AddCommand( "testSaveGame",			TestSaveGame_f,				CMD_FL_GAME|CMD_FL_CHEAT,	"test a save game for a level" );
 // RAVEN END
+
+	//Saucy: Command to select character
+	cmdSystem->AddCommand("character",				Cmd_Character_f,			CMD_FL_GAME|CMD_FL_CHEAT, "chooses the player character type");
+
 	cmdSystem->AddCommand( "game_memory",			idClass::DisplayInfo_f,		CMD_FL_GAME,				"displays game class info" );
 	cmdSystem->AddCommand( "listClasses",			idClass::ListClasses_f,		CMD_FL_GAME,				"lists game classes" );
 	cmdSystem->AddCommand( "listThreads",			idThread::ListThreads_f,	CMD_FL_GAME|CMD_FL_CHEAT,	"lists script threads" );
@@ -3247,6 +3277,8 @@ void idGameLocal::InitConsoleCommands( void ) {
 // squirrel: Mode-agnostic buymenus
 	cmdSystem->AddCommand( "buyMenu",				Cmd_ToggleBuyMenu_f,		CMD_FL_GAME,				"Toggle buy menu (if in a buy zone and the game type supports it)" );
 	cmdSystem->AddCommand( "buy",					Cmd_BuyItem_f,				CMD_FL_GAME,				"Buy an item (if in a buy zone and the game type supports it)" );
+
+
 // RITUAL END
 
 }

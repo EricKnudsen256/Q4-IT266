@@ -234,6 +234,7 @@ idGameLocal::idGameLocal
 ============
 */
 idGameLocal::idGameLocal() {
+	playerCharacter = "player_marine";
 	Clear();
 }
 
@@ -1300,6 +1301,7 @@ void idGameLocal::LoadMap( const char *mapName, int randseed ) {
 	int i;
 
 
+	
 
 // RAVEN BEGIN
 // jnewquist: Tag scope and callees to track allocations using "new".
@@ -1904,12 +1906,12 @@ void idGameLocal::InitFromNewMap( const char *mapName, idRenderWorld *renderWorl
 	TIME_THIS_SCOPE( __FUNCLINE__);
 
 
+	//Saucy: random map shit
 	float rnd;
 	int totalMaps = 13;
+	random.SetSeed(rand() % 100);
+	rnd = random.RandomFloat() * totalMaps;
 
-	rnd = random.RandomFloat() * totalMaps;
-	//Roll twice because the first roll is always the same, and always airdefense1
-	rnd = random.RandomFloat() * totalMaps;
 
 	Printf("RANDOM MAP NUMBER = %f\n", rnd);
 
@@ -3512,7 +3514,8 @@ idGameLocal::MenuFrame
 Called each session frame when a map is not running (e.g. usually in the main menu)
 ================
 */
-void idGameLocal::MenuFrame( void ) { }
+void idGameLocal::MenuFrame( void ) {
+}
 
 /*
 ================
@@ -4093,7 +4096,6 @@ idGameLocal::HandleMainMenuCommands
 void idGameLocal::HandleMainMenuCommands( const char *menuCommand, idUserInterface *gui ) {
 	if ( !idStr::Icmp( menuCommand, "initCreateServerSettings" ) ) {
 		int	guiValue = 0;
-
 		switch ( mpGame.GameTypeToVote( si_gameType.GetString() ) ) {
 			case idMultiplayerGame::VOTE_GAMETYPE_DM:
 				guiValue = 0;
@@ -8518,6 +8520,12 @@ bool idGameLocal::IsTeamPowerups( void ) {
 	}
 	return ( gameType != GAME_ARENA_CTF );
 }
+
+//Saucy: Added SetCharacter
+void idGameLocal::SetCharacter(idStr character) {
+	playerCharacter = character;
+}
+
 
 // RAVEN BEGIN
 // mwhitlock: Dynamic memory consolidation

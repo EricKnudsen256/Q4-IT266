@@ -442,6 +442,10 @@ public:
 	int filterMod;
 	idList<idStr> modList;
 
+	//Saucy: added character choice
+
+	idStr playerCharacter;
+
 	// ---------------------- Public idGame Interface -------------------
 
 							idGameLocal();
@@ -454,6 +458,8 @@ public:
 	virtual void			Init( void );
 #endif
 // RAVEN END
+
+	void					SetCharacter(idStr character);
 	virtual void			Shutdown( void );
 	virtual void			SetLocalClient( int clientNum );
 	virtual void			ThrottleUserInfo( void );
@@ -1011,6 +1017,7 @@ private:
 	idUserInterface			*demo_hud;
 	idUserInterface			*demo_mphud;
 	idUserInterface			*demo_cursor;
+	idUserInterface			*main_gui;
 
 	int						demo_protocol;	// keep track of the protocol of the demo we're replaying
 
