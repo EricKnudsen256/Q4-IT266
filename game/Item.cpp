@@ -642,7 +642,7 @@ bool idItem::Pickup( idPlayer *player ) {
 		const idKeyValue* arg = attr.FindKey( "weapon" );
 
 		if ( arg ) {
-			if ( !player->inventory.Give( player, player->spawnArgs, arg->GetKey(), arg->GetValue(), NULL, false, dropped, true ) ) {
+			if ( !player->inventory.Give( player, player->spawnArgs, arg->GetKey(), arg->GetValue(), NULL, false, false, true ) ) {
 				StartSound( "snd_noacquire", SND_CHANNEL_ITEM, 0, false, NULL );
 			}
 		}

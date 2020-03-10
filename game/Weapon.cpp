@@ -2535,6 +2535,7 @@ void rvWeapon::Attack( bool altAttack, int num_attacks, float spread, float fuse
 		}
 	}
 
+
 	// set the shader parm to the time of last projectile firing,
 	// which the gun material shaders can reference for single shot barrel glows, etc
 	viewModel->SetShaderParm ( SHADERPARM_DIVERSITY, gameLocal.random.CRandomFloat() );
