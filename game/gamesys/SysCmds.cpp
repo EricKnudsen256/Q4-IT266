@@ -554,7 +554,7 @@ void GiveStuffToPlayer( idPlayer* player, const char* name, const char* value )
 		return;
 	}
 	if (idStr::Icmp(name, "tri_tip") == 0) {
-		player->inventory.GivePassive(player, PASSIVE_TRI_TIP);
+		player->inventory.GivePassive(player, PASSIVE_SOLDIER_SYRINGE);
 		gameLocal.Printf("tri_tip");
 		return;
 	}

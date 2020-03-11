@@ -1909,11 +1909,9 @@ void idGameLocal::InitFromNewMap( const char *mapName, idRenderWorld *renderWorl
 	//Saucy: random map shit
 	float rnd;
 	int totalMaps = 13;
-	random.SetSeed(rand() % 100);
+	random.SetSeed(randseed);
 	rnd = random.RandomFloat() * totalMaps;
 
-
-	Printf("RANDOM MAP NUMBER = %f\n", rnd);
 
 	
 	switch ((int)rnd) {
@@ -3515,6 +3513,7 @@ Called each session frame when a map is not running (e.g. usually in the main me
 ================
 */
 void idGameLocal::MenuFrame( void ) {
+	random.RandomInt();
 }
 
 /*
@@ -7808,15 +7807,7 @@ idEntity* idGameLocal::HitScan(
 							}
 						}
 
-						if (owner->IsType(idPlayer::GetClassType()) && GetLocalPlayer()->inventory.GetPassives(PASSIVE_TRI_TIP) != 0)
-						{
-							float rnd = random.RandomFloat();
-							int tri_tip = GetLocalPlayer()->inventory.GetPassives(PASSIVE_TRI_TIP);
-							if (rnd < (float)(tri_tip) / 10.0f)
-							{
-								ent->bleedTime = 300;
-							}
-						}
+
 
 						ent->Damage( owner, owner, dir, damage, damageScale, hitJoint, crit);
 					}
@@ -7841,15 +7832,6 @@ idEntity* idGameLocal::HitScan(
 							}
 							if ( damage && damage[0] ) {
 
-								if (owner->IsType(idPlayer::GetClassType()) && GetLocalPlayer()->inventory.GetPassives(PASSIVE_TRI_TIP) != 0)
-								{
-									float rnd = random.RandomFloat();
-									int tri_tip = GetLocalPlayer()->inventory.GetPassives(PASSIVE_TRI_TIP);
-									if (rnd < (float)(tri_tip) / 10.0f)
-									{
-										actualHitEnt->bleedTime = 300;
-									}
-								}
 
 								actualHitEnt->Damage( owner, owner, dir, damage, damageScale, CLIPMODEL_ID_TO_JOINT_HANDLE( tr.c.id ) );
 							}

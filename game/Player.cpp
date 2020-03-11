@@ -1838,7 +1838,20 @@ void idPlayer::Spawn( void ) {
 
 	//Saucy: Added code in spawn for checking playerType
 	playerType = gameLocal.playerCharacter;
-	const idDict* playerDict = gameLocal.FindEntityDefDict(playerType, false);
+	const idDict* playerDict = gameLocal.FindEntityDefDict(playerType, true);
+	spawnArgs.Set("hud", playerDict->GetString("hud"));
+	spawnArgs.Set("wristcomm", playerDict->GetString("wristcomm"));
+	spawnArgs.SetInt("pm_speed", playerDict->GetInt("pm_speed"));
+	spawnArgs.SetInt("pm_walkspeed", playerDict->GetInt("pm_walkspeed"));
+	spawnArgs.SetInt("strogg", playerDict->GetInt("strogg"));
+
+	spawnArgs.Set("def_head", playerDict->GetString("char_marinehead_kanestrg"));
+	spawnArgs.Set("model", playerDict->GetString("model_player_strogg"));
+
+	spawnArgs.SetInt("health", playerDict->GetInt("health"));
+	spawnArgs.SetInt("maxhealth", playerDict->GetInt("maxhealth"));
+	spawnArgs.SetInt("armor", playerDict->GetInt("armor"));
+	spawnArgs.SetInt("maxarmor", playerDict->GetInt("maxarmor"));
 
 	if ( entityNumber >= MAX_CLIENTS ) {
 		gameLocal.Error( "entityNum > MAX_CLIENTS for player.  Player may only be spawned with a client." );
@@ -2092,8 +2105,6 @@ void idPlayer::Spawn( void ) {
 
 	idStr allowedWeapon0 = playerDict->GetString("allowed_Weapon_0", "weapon_blaster");
 	idStr allowedWeapon1 = playerDict->GetString("allowed_Weapon_1", "weapon_machinegun");
-
-	
 
 	Give("weapon", allowedWeapon0, true);
 	Give("weapon", allowedWeapon1, true);

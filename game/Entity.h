@@ -147,10 +147,7 @@ public:
 	idVec4					mLastLongThinkColor;
 // RAVEN END
 
-	// Saucy: added bleedTime int
-	int					bleedTime;
-	int					timeBetweenBleeds;
-	bool				logBleed;
+
 
 
 	struct entityFlags_s {
@@ -532,9 +529,7 @@ public:
 	virtual void			GuidedProjectileIncoming( idGuidedProjectile * projectile ) { }
 // RAVEN END
 
-	//Saucy: Added CheckBleed()
 
-	void					CheckBleed(void);
 
 protected:
 	renderEntity_t			renderEntity;						// used to present a model to the renderer
@@ -688,8 +683,6 @@ protected:
 	void					Event_RemoveTarget				( idEntity *removeMe );
 // mekberg: added
 	void					Event_SetHealth					( float newHealth );
-	void					SetBleedTime					(void);
-
 
 
 // RAVEN END

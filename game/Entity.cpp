@@ -221,7 +221,6 @@ ABSTRACT_DECLARATION( idClass, idEntity )
 	EVENT( EV_RemoveTarget,			idEntity::Event_RemoveTarget )
 // mekberg: added
 	EVENT( EV_SetHealth,			idEntity::Event_SetHealth )
-	EVENT( EV_SetBleed,				idEntity::SetBleedTime)
 // RAVEN END
 END_CLASS
 
@@ -531,11 +530,7 @@ idEntity::idEntity() {
 	predictTime = 0;
 // RAVEN END
 
-	//Saucy Hope this fixes everything bleeding
 
-	bleedTime = 0;
-	timeBetweenBleeds = 0;
-	logBleed = false;
 }
 
 /*
@@ -690,6 +685,7 @@ void idEntity::Spawn( void ) {
 	declManager->FindType( DECL_ENTITYDEF, "damage_crush", false, false );
 	//declManager->FindType(DECL_ENTITYDEF, "damage_bleed", false, false);
 // RAVEN END
+
 
 
 }
@@ -1006,11 +1002,6 @@ idEntity::Think
 void idEntity::Think( void ) {
 	RunPhysics();
 	Present();
-	CheckBleed();
-	if (logBleed)
-	{
-		gameLocal.Printf("HIT");
-	}
 }
 
 /*
@@ -6308,30 +6299,6 @@ size_t idEntity::Size( void ) const
 }
 
 
-void idEntity::SetBleedTime( void ) {
-	bleedTime = 300;
-}
-
-// Saucy CheckBleed Code
-void idEntity::CheckBleed( void ) {
-
-	if (bleedTime != 0) {
-		gameLocal.Printf("BLEED TIME:%i\n", bleedTime);
-	}
-
-	if (bleedTime > 0)
-	{
-		gameLocal.Printf("BLEED Check\n");
-		if (timeBetweenBleeds <= 0)
-		{
-			gameLocal.Printf("BLEED\n");
-			//Damage(NULL, NULL, idVec3(0, 0, -1), "damage_bleed", 1.0f, 0);
-			timeBetweenBleeds = 60;
-		}
-		bleedTime--;
-		timeBetweenBleeds--;
-	}
-}
 // RAVEN END
 
 
