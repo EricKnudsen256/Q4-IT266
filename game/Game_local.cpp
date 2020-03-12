@@ -234,8 +234,12 @@ idGameLocal::idGameLocal
 ============
 */
 idGameLocal::idGameLocal() {
+
 	playerCharacter = "player_marine";
 	Clear();
+		for (int i = 0; i < sizeof(passives); i++) {
+		passives[i] = 0;
+	}
 }
 
 /*
@@ -1909,7 +1913,6 @@ void idGameLocal::InitFromNewMap( const char *mapName, idRenderWorld *renderWorl
 	//Saucy: random map shit
 	float rnd;
 	int totalMaps = 13;
-	random.SetSeed(randseed);
 	rnd = random.RandomFloat() * totalMaps;
 
 
@@ -1958,6 +1961,7 @@ void idGameLocal::InitFromNewMap( const char *mapName, idRenderWorld *renderWorl
 			Printf("RANDOM MAP FAILED, GOING TO MAP THAT SHOULD HAVE BEEN LOADED");
 			break;
 	}
+	//mapName = "maps/game/airdefense1";
 	
 	renderWorld->InitFromMap(mapName);
 	
@@ -2040,7 +2044,10 @@ void idGameLocal::InitFromNewMap( const char *mapName, idRenderWorld *renderWorl
 
 	gamestate = GAMESTATE_ACTIVE;
 
+
 	Printf( "---------------------------------------------\n" );
+
+
 }
 
 /*
@@ -5861,7 +5868,20 @@ void idGameLocal::RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEnt
 			}
 
 			dir.Normalize();
-			ent->Damage( inflictor, attacker, dir, damageDefName, damageScale, CLIPMODEL_ID_TO_JOINT_HANDLE(ent->GetPhysics()->GetClipModel()->GetId()) );
+
+			bool crit = false;
+			if (attacker->IsType(idPlayer::GetClassType()) && GetLocalPlayer()->inventory.GetPassives(PASSIVE_LENS_MAKERS) != 0)
+			{
+				float rnd = random.RandomFloat();
+				int lens_makers = GetLocalPlayer()->inventory.GetPassives(PASSIVE_LENS_MAKERS);
+				if (rnd < (float)(lens_makers) / 10.0f)
+				{
+
+					crit = true;
+				}
+			}
+
+			ent->Damage( inflictor, attacker, dir, damageDefName, damageScale, CLIPMODEL_ID_TO_JOINT_HANDLE(ent->GetPhysics()->GetClipModel()->GetId()), crit );
 
 			// for stats, count the first 
 			if( attacker && attacker->IsType( idPlayer::GetClassType() ) && inflictor && inflictor->IsType( idProjectile::GetClassType() ) && ent->IsType( idPlayer::GetClassType() ) && hitCount ) {
@@ -7601,6 +7621,7 @@ idEntity* idGameLocal::HitScan(
 	idVec3		fxDir;
 	idVec3		impulse;
 	idVec4		hitscanTint( 1.0f, 1.0f, 1.0f, 1.0f );
+	idVec4		critTint(1.0f, 1.0f, 0.0f, 1.0f);
 	int			reflect;
 	float		tracerChance;
 	idEntity*	ignore;
@@ -7804,17 +7825,19 @@ idEntity* idGameLocal::HitScan(
 							if (rnd < (float)(lens_makers) / 10.0f)
 							{
 								crit = true;
+								gameLocal.PlayEffect(GetEffect(hitscanDict, "fx_crit", tr.c.materialType), collisionPoint, tr.c.normal.ToMat3(), false, vec3_origin, false, false, EC_IMPACT, critTint);
 							}
 						}
 
 
-
+						gameLocal.PlayEffect(GetEffect(hitscanDict, "fx_impact", tr.c.materialType), collisionPoint, tr.c.normal.ToMat3(), false, vec3_origin, false, false, EC_IMPACT, hitscanTint);
 						ent->Damage( owner, owner, dir, damage, damageScale, hitJoint, crit);
 					}
 
 					// Let the entity add its own damage effect
 					if ( !g_perfTest_weaponNoFX.GetBool() ) {
 						ent->AddDamageEffect ( tr, dir, damage, owner );
+						ent->AddDamageEffect(tr, dir, damage, owner);
 					}
 				} else { 
 					if ( actualHitEnt
@@ -8506,6 +8529,16 @@ bool idGameLocal::IsTeamPowerups( void ) {
 //Saucy: Added SetCharacter
 void idGameLocal::SetCharacter(idStr character) {
 	playerCharacter = character;
+}
+void idGameLocal::SetPassives(int arr[]) {
+	
+	for (int i = 0; i < 5; i++) {
+		passives[i] += arr[i];
+	}
+	
+}
+int* idGameLocal::GetPassives(void) {
+	return passives;
 }
 
 

@@ -534,28 +534,28 @@ void GiveStuffToPlayer( idPlayer* player, const char* name, const char* value )
 	//Saucy: Give commands for passives
 
 	if (idStr::Icmp(name, "tougher_times") == 0) {
-		player->inventory.GivePassive(player, PASSIVE_TOUGHER_TIMES);
+		player->inventory.GivePassive(PASSIVE_TOUGHER_TIMES);
 		gameLocal.Printf("tougher_times");
 		return;
 	}
 	if (idStr::Icmp(name, "cautious_slug") == 0) {
-		player->inventory.GivePassive(player, PASSIVE_CAUTIOUS_SLUG);
+		player->inventory.GivePassive(PASSIVE_CAUTIOUS_SLUG);
 		gameLocal.Printf("cautious_slug");
 		return;
 	}
 	if (idStr::Icmp(name, "goat_hoof") == 0) {
-		player->inventory.GivePassive(player, PASSIVE_GOAT_HOOF);
+		player->inventory.GivePassive(PASSIVE_GOAT_HOOF);
 		gameLocal.Printf("goat_hoof");
 		return;
 	}
 	if (idStr::Icmp(name, "lens_makers") == 0) {
-		player->inventory.GivePassive(player, PASSIVE_LENS_MAKERS);
+		player->inventory.GivePassive(PASSIVE_LENS_MAKERS);
 		gameLocal.Printf("lens_makers");
 		return;
 	}
-	if (idStr::Icmp(name, "tri_tip") == 0) {
-		player->inventory.GivePassive(player, PASSIVE_SOLDIER_SYRINGE);
-		gameLocal.Printf("tri_tip");
+	if (idStr::Icmp(name, "hoppo_feather") == 0) {
+		player->inventory.GivePassive(PASSIVE_HOPPO_FEATHER);
+		gameLocal.Printf("hoppo_feather");
 		return;
 	}
 

@@ -445,6 +445,8 @@ public:
 	//Saucy: added character choice
 
 	idStr playerCharacter;
+	int	passives[5];
+	
 
 	// ---------------------- Public idGame Interface -------------------
 
@@ -460,6 +462,9 @@ public:
 // RAVEN END
 
 	void					SetCharacter(idStr character);
+	void					SetPassives(int	arr[]);
+	int*					GetPassives(void);
+
 	virtual void			Shutdown( void );
 	virtual void			SetLocalClient( int clientNum );
 	virtual void			ThrottleUserInfo( void );

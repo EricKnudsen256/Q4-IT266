@@ -475,7 +475,11 @@ void idInventory::Save( idSaveGame *savefile ) const {
 */
 	savefile->WriteInt( secretAreasDiscovered );
 
+
+
 	savefile->WriteSyncId();
+
+
 }
 
 /*
@@ -566,7 +570,13 @@ void idInventory::Restore( idRestoreGame *savefile ) {
 */
 	savefile->ReadInt( secretAreasDiscovered );
 
+	for (i = 0; i < 5; i++) {
+		savefile->ReadInt(passives[i]);
+	}
+
 	savefile->ReadSyncId( "idInventory::Restore" );
+
+
 }
 
 /*
@@ -1084,8 +1094,32 @@ bool idInventory::UseAmmo( int index, int amount ) {
 Saucy Inventory: Give Passive
 ==============
 */
-void idInventory::GivePassive(idPlayer *player, PASSIVES PASSIVE_NAME) {
+void idInventory::GivePassive(PASSIVES PASSIVE_NAME) {
 	passives[PASSIVE_NAME] += 1;
+}
+void idInventory::SetPassives(int arr[]) {
+	for (int i = 0; i < sizeof(arr); i++) {
+		for (int j = 0; j < arr[i]; j++) {
+			switch (i)
+			{
+			case 0:
+				GivePassive(PASSIVE_TOUGHER_TIMES);
+				break;
+			case 1:
+				GivePassive(PASSIVE_CAUTIOUS_SLUG);
+				break;
+			case 2:
+				GivePassive(PASSIVE_GOAT_HOOF);
+				break;
+			case 3:
+				GivePassive(PASSIVE_LENS_MAKERS);
+				break;
+			case 4:
+				GivePassive(PASSIVE_HOPPO_FEATHER);
+				break;
+			}
+		}
+	}
 }
 
 int idInventory::GetPassives(PASSIVES PASSIVE_NAME) {
@@ -1122,6 +1156,10 @@ idPlayer::idPlayer() {
 
 	lastHitTime				= 0;
 	lastSavingThrowTime		= 0;
+
+	timeSinceHeal			= 0;
+	timeSinceHurt			= 0;
+
 
 	weapon					= NULL;
 
@@ -2109,6 +2147,36 @@ void idPlayer::Spawn( void ) {
 	Give("weapon", allowedWeapon0, true);
 	Give("weapon", allowedWeapon1, true);
 
+
+	getPassivesFromLocal();
+
+	for (int i = 0; i < 5; i++) {
+		int rand = gameLocal.random.RandomInt(5);
+
+		switch (rand)
+		{
+		case 0:
+			inventory.GivePassive(PASSIVE_TOUGHER_TIMES);
+			break;
+		case 1:
+			inventory.GivePassive(PASSIVE_CAUTIOUS_SLUG);
+			break;
+		case 2:
+			inventory.GivePassive(PASSIVE_GOAT_HOOF);
+			break;
+		case 3:
+			inventory.GivePassive(PASSIVE_LENS_MAKERS);
+			break;
+		case 4:
+			inventory.GivePassive(PASSIVE_HOPPO_FEATHER);
+			break;
+		}
+
+	}
+
+	sendPassivesToLocal();
+
+	gameLocal.Printf("Passive Items Given\n");
 	
 }
 
@@ -3496,6 +3564,15 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	}
 	
 	_hud->StateChanged( gameLocal.time );
+
+
+	_hud->SetStateInt("player_tougher_times", inventory.GetPassives(PASSIVE_TOUGHER_TIMES));
+	_hud->SetStateInt("player_cautious_slug", inventory.GetPassives(PASSIVE_CAUTIOUS_SLUG));
+	_hud->SetStateInt("player_goat_hoof", inventory.GetPassives(PASSIVE_GOAT_HOOF));
+	_hud->SetStateInt("player_lens_makers", inventory.GetPassives(PASSIVE_LENS_MAKERS));
+	_hud->SetStateInt("player_hoppo_feather", inventory.GetPassives(PASSIVE_HOPPO_FEATHER));
+
+
 }
 
 /*
@@ -9035,7 +9112,8 @@ void idPlayer::Move( void ) {
 
 	// set physics variables
 	physicsObj.SetMaxStepHeight( pm_stepsize.GetFloat() );
-	physicsObj.SetMaxJumpHeight( pm_jumpheight.GetFloat() );
+	float jumpheight = pm_jumpheight.GetFloat() + pm_jumpheight.GetFloat() * .3 * inventory.GetPassives(PASSIVE_HOPPO_FEATHER);
+	physicsObj.SetMaxJumpHeight(jumpheight);
 
 	if ( noclip ) {
 		physicsObj.SetContents( 0 );
@@ -9723,12 +9801,17 @@ void idPlayer::Think( void ) {
 
 	//Saucy: think code for cautious_slug
 	int slugs = inventory.GetPassives(PASSIVE_CAUTIOUS_SLUG);
-	if (timeSinceHurt > 300) {
+
+	if (timeSinceHurt > 300 && slugs != 0) {
 		if (timeSinceHeal >= 12) {
-			if (timeSinceHeal > 1) {
-				if (health < 100) {
-					health = health + slugs;
-					timeSinceHeal = 0;
+			if (health < inventory.maxHealth) {
+				idVec4	healTint(0.0f, 1.0f, 0.0f, 1.0f);
+				gameLocal.PlayEffect(spawnArgs, "fx_heal", GetPhysics()->GetOrigin(), idVec3(0, 0, 1).ToMat3(), false, vec3_origin, healTint);
+				health = health + slugs;
+				timeSinceHeal = 0;
+				if (health > inventory.maxHealth)
+				{
+					health = inventory.maxHealth;
 				}
 			}
 		}
@@ -14182,5 +14265,14 @@ int idPlayer::CanSelectWeapon(const char* weaponName)
 
 	return weaponNum;
 }
+
+void idPlayer::sendPassivesToLocal(void) {
+	gameLocal.SetPassives(inventory.passives);
+}
+
+void idPlayer::getPassivesFromLocal(void) {
+	inventory.SetPassives(gameLocal.GetPassives());
+}
+
 
 // RITUAL END

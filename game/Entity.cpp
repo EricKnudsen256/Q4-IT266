@@ -3665,11 +3665,23 @@ void idEntity::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 
 	int	damage = damageDef->GetInt( "damage" );
 
+	//gameLocal.Printf("Damage def name:%s \n",  damageDefName);
+
 	//Saucy: Added crit ability
 
 	if (crit) {
+
 		damage *= 2;
-		gameLocal.Printf("crit");
+
+		/*
+		const idDeclEntityDef* def = gameLocal.FindEntityDef("weapon_shotgun", false);
+		idDict attackDict = def->dict;
+
+		idVec4	critTint(1.0f, 1.0f, 0.0f, 1.0f);
+		gameLocal.PlayEffect(gameLocal.GetEffect(attackDict, "fx_crit"), GetPhysics()->GetOrigin(), GetPhysics()->GetOrigin().ToMat3(), false, vec3_origin, false, false, EC_IMPACT, critTint);
+
+		gameLocal.Printf("Played effect at: %f, %f, %f\n", GetPhysics()->GetOrigin().x, GetPhysics()->GetOrigin().y, GetPhysics()->GetOrigin().x);
+		*/
 	}
 
 	// inform the attacker that they hit someone

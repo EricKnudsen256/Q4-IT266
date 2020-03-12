@@ -153,7 +153,7 @@ enum PASSIVES {
 	PASSIVE_CAUTIOUS_SLUG,
 	PASSIVE_GOAT_HOOF,
 	PASSIVE_LENS_MAKERS,
-	PASSIVE_SOLDIER_SYRINGE
+	PASSIVE_HOPPO_FEATHER
 };
 
 enum {
@@ -242,7 +242,8 @@ public:
 	void					GivePowerUp( idPlayer* player, int powerup, int msec );
 
 	//Saucy: Added
-	void					GivePassive(idPlayer* player, PASSIVES PASSIVE_NAME);
+	void					GivePassive(PASSIVES PASSIVE_NAME);
+	void					SetPassives(int arr[]);
 	int						GetPassives(PASSIVES PASSIVE_NAME);
 	int						passives[5];
 
@@ -812,6 +813,10 @@ public:
 	void					ClampCash( float minCash, float maxCash );
 	void					SetCash( float newCashAmount );
 	void					ResetCash();
+
+	//Saucy: added to fix level transitions
+	void					sendPassivesToLocal();
+	void						getPassivesFromLocal();
 // RITUAL END
 
 protected:
